@@ -7,7 +7,7 @@ public class Bird : MonoBehaviour
 {
     new public Rigidbody2D rigidbody2D;
     public Animator animator;
-    void Start()
+    public void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -21,7 +21,7 @@ public class Bird : MonoBehaviour
             Vector2 force;
             force.x = 0;
             force.y = forceY;
-            //rigidbody2D // 낙하중 -> 멈추고 나서 -> 힘을 줘야지 force적용됨 ㅇㅇ
+            //rigidbody2D // 낙하중 -> 멈추고 나서 -> 힘을 줘야지 force적용됨
             rigidbody2D.velocity = Vector2.zero;// new Vector2(0, 0);
             rigidbody2D.AddForce(force);
 
@@ -38,12 +38,27 @@ public class Bird : MonoBehaviour
         //게임 오버 UI표시
         GameManager.instace.SetGameOver();
 
+         OnDie(collision);
         // 스크롤 하는것들 다 멈추기
         animator.Play("Die", 0, 0);
+    }
+
+
+   
+
+    protected void OnDie(Collision2D collision)
+    {
+        Debug.LogWarning(collision);
+
+        GameManager.instace.SetGameOver();
+        animator.Play("Die", 0, 0);
+
+     
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameManager.instace.AddScore();
     }
+
 }
